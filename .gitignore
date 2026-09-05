@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# FastAPI / Python tooling
+*.log
+
+# Node / React
+node_modules/
+dist/
+.vite/
+
+# macOS
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
