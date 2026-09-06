@@ -1,14 +1,14 @@
-# 🍾 LiquorFlow
+#  LiquorFlow
 
 ### Order & Delivery Management System for Small Liquor Retailers
 
 LiquorFlow is a web-based order and delivery management system designed to help small liquor retailers move away from informal WhatsApp/phone-based delivery coordination to a structured, trackable workflow.
 
-The system connects **attendants, dispatchers, and riders** through role-based access and provides visibility throughout the delivery lifecycle — from order creation to proof of delivery.
+The system connects **admin, dispatchers and riders** through role-based access and provides visibility throughout the delivery lifecycle — from order creation to proof of delivery.
 
 ---
 
-## 🎯 Project Overview
+##  Project Overview
 
 Small retailers often coordinate customer deliveries through phone calls and WhatsApp messages. This can make it difficult to:
 
@@ -22,7 +22,7 @@ LiquorFlow addresses these challenges by providing a centralized digital workflo
 
 ---
 
-## 💡 Solution
+##  Solution
 
 LiquorFlow provides a simple role-based workflow:
 
@@ -48,21 +48,17 @@ Every stage is recorded by the system, providing better visibility and accountab
 
 ---
 
-## 👥 User Roles
+##  User Roles
 
 ### Administrator
 
 * Access the management dashboard
 * Manage products
+* Create customer orders
+* Select products
 * View orders
 * Oversee deliveries
 * Manage system users
-
-### Attendant
-
-* Create customer orders
-* Select products and quantities
-* Provide delivery information
 * View created orders
 
 ### Dispatcher
@@ -83,9 +79,9 @@ Every stage is recorded by the system, providing better visibility and accountab
 
 ---
 
-## ✨ Key Features
+##  Key Features
 
-### 🔐 Authentication & Authorization
+###  Authentication & Authorization
 
 * JWT-based authentication
 * Password hashing
@@ -93,7 +89,7 @@ Every stage is recorded by the system, providing better visibility and accountab
 * Protected API endpoints
 * Separate workflows for Admin, Attendant, Dispatcher and Rider
 
-### 📦 Product Management
+###  Product Management
 
 * Create products
 * Manage product prices
@@ -101,14 +97,14 @@ Every stage is recorded by the system, providing better visibility and accountab
 * Activate/deactivate products
 * Retrieve active products for order creation
 
-### 👤 Customer Management
+###  Customer Management
 
 * Create customer records
 * Store customer name
 * Store customer phone number
 * Store delivery address
 
-### 🛒 Order Management
+###  Order Management
 
 * Create orders
 * Add multiple products to an order
@@ -117,7 +113,7 @@ Every stage is recorded by the system, providing better visibility and accountab
 * Track order status
 * View orders in the dashboard
 
-### 🚚 Delivery Management
+###  Delivery Management
 
 * Assign riders to orders
 * Prevent duplicate delivery assignments
@@ -126,7 +122,7 @@ Every stage is recorded by the system, providing better visibility and accountab
 * Record delivery timestamps
 * Capture proof of delivery
 
-### 🔄 Dashboard Synchronization
+###  Dashboard Synchronization
 
 The frontend periodically synchronizes with the backend to keep dashboard information updated.
 
@@ -134,7 +130,7 @@ A **Sync Now** option is also available for manual synchronization.
 
 ---
 
-## 🔄 Delivery Status Workflow
+##  Delivery Status Workflow
 
 LiquorFlow enforces the following delivery sequence:
 
@@ -152,13 +148,13 @@ This prevents invalid status transitions and provides a clear audit trail of the
 
 ---
 
-## 🏗️ System Architecture
+##  System Architecture
 
 ```text
                     ┌─────────────────────┐
                     │       User          │
-                    │ Admin / Attendant   │
-                    │ Dispatcher / Rider  │
+                    │      Admin /        │
+                    │Dispatcher / Rider   │
                     └──────────┬──────────┘
                                │
                                ▼
@@ -191,7 +187,7 @@ This prevents invalid status transitions and provides a clear audit trail of the
 
 ---
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 ### Backend
 
@@ -222,7 +218,7 @@ This prevents invalid status transitions and provides a clear audit trail of the
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```text
 LiquorFlow/
@@ -257,7 +253,7 @@ LiquorFlow/
 
 ---
 
-## 🗄️ Core Data Models
+##  Core Data Models
 
 ### User
 
@@ -277,7 +273,6 @@ Supported roles:
 
 ```text
 ADMIN
-ATTENDANT
 DISPATCHER
 RIDER
 ```
@@ -344,7 +339,7 @@ updated_at
 
 ---
 
-## 🔒 Security
+##  Security
 
 LiquorFlow implements several security controls:
 
@@ -362,7 +357,7 @@ Production credentials and secrets are stored through environment variables rath
 
 ---
 
-## 🧪 Testing
+##  Testing
 
 The backend test suite contains automated tests covering major application functionality.
 
@@ -386,23 +381,23 @@ The tests cover areas including:
 
 ---
 
-## 🌐 Live Application
+##  Live Application
 
 ### Frontend
 
-[LiquorFlow Live Demo](https://liquorflow-frontend.onrender.com?utm_source=chatgpt.com)
+[LiquorFlow Live Demo](https://liquorflow-frontend.onrender.com)
 
 ### Backend API
 
-[LiquorFlow Backend API](https://liquorflow-backend.onrender.com?utm_source=chatgpt.com)
+[LiquorFlow Backend API](https://liquorflow-backend.onrender.com)
 
 ### API Documentation
 
-[LiquorFlow API Documentation](https://liquorflow-backend.onrender.com/docs?utm_source=chatgpt.com)
+[LiquorFlow API Documentation](https://liquorflow-backend.onrender.com)
 
 ---
 
-## 🚀 Running Locally
+##  Running Locally
 
 ### Prerequisites
 
@@ -510,7 +505,7 @@ http://localhost:5173
 
 ---
 
-## 🧪 Running Tests
+##  Running Tests
 
 From the backend directory with the virtual environment activated:
 
@@ -526,7 +521,7 @@ Expected result for the current test suite:
 
 ---
 
-## ☁️ Deployment
+##  Deployment
 
 LiquorFlow is deployed using **Render**.
 
@@ -549,7 +544,7 @@ The backend uses database migrations during deployment and production environmen
 
 ---
 
-## 📸 Demonstrated Workflow
+##  Demonstrated Workflow
 
 The completed production workflow has been manually verified:
 
@@ -580,7 +575,7 @@ This demonstrates the core MVP from order creation through delivery completion.
 
 ---
 
-## 🎓 Reflex Project
+##  Reflex Project
 
 LiquorFlow was developed as part of **Reflex — The Readiness Sprint**.
 
@@ -597,7 +592,7 @@ The project focuses on solving a real operational problem faced by small retaile
 
 ---
 
-## 🔮 Future Improvements
+##  Future Improvements
 
 With additional development time, LiquorFlow could be extended with:
 
@@ -615,17 +610,17 @@ With additional development time, LiquorFlow could be extended with:
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 **John Loreng**
 
 GitHub:
 
-[johnloreng/LiquorFlow](https://github.com/johnloreng/LiquorFlow?utm_source=chatgpt.com)
+[johnloreng/LiquorFlow](https://github.com/johnloreng/LiquorFlow)
 
 ---
 
-## 📄 Project Status
+##  Project Status
 
 **Status: Working MVP**
 
