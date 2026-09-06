@@ -47,7 +47,7 @@ const handleLogout = () => {
   localStorage.removeItem("access_token");
   localStorage.removeItem("user_role");
 
-  window.location.href = "/login";
+  window.location.href = "/";
 };
 
 const dashboardTitle = roleTitles[role] || "LiquorFlow Dashboard";
