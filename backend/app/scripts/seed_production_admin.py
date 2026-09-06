@@ -6,41 +6,79 @@ from app.models.enums import UserRole
 from app.models.user import User
 
 
-def main():
-    email = os.getenv("SEED_ADMIN_EMAIL")
-    password = os.getenv("SEED_ADMIN_PASSWORD")
-    name = os.getenv("SEED_ADMIN_NAME", "John Loreng")
+def create_user_if_missing(
+    db,
+    name,
+    email,
+    password,
+    role,
+):
+    existing_user = (
+        db.query(User)
+        .filter(User.email == email.lower())
+        .first()
+    )
 
-    if not email or not password:
+    if existing_user:
+        print(
+            f"{role.value} already exists: "
+            f"{existing_user.email}"
+        )
+        return
+
+    user = User(
+        name=name,
+        email=email.lower(),
+        password_hash=hash_password(password),
+        role=role,
+        is_active=True,
+    )
+
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    print(
+        f"{role.value} created successfully: "
+        f"{user.email}"
+    )
+
+
+def main():
+    admin_email = os.getenv("SEED_ADMIN_EMAIL")
+    admin_password = os.getenv("SEED_ADMIN_PASSWORD")
+    admin_name = os.getenv("SEED_ADMIN_NAME", "John Loreng")
+
+    rider_email = os.getenv("SEED_RIDER_EMAIL")
+    rider_password = os.getenv("SEED_RIDER_PASSWORD")
+    rider_name = os.getenv("SEED_RIDER_NAME", "LiquorFlow Rider")
+
+    if not admin_email or not admin_password:
         print("Production admin seed variables are not configured.")
+        return
+
+    if not rider_email or not rider_password:
+        print("Production rider seed variables are not configured.")
         return
 
     db = SessionLocal()
 
     try:
-        existing_user = (
-            db.query(User)
-            .filter(User.email == email.lower())
-            .first()
-        )
-
-        if existing_user:
-            print(f"Production admin already exists: {existing_user.email}")
-            return
-
-        admin = User(
-            name=name,
-            email=email.lower(),
-            password_hash=hash_password(password),
+        create_user_if_missing(
+            db=db,
+            name=admin_name,
+            email=admin_email,
+            password=admin_password,
             role=UserRole.ADMIN,
-            is_active=True,
         )
 
-        db.add(admin)
-        db.commit()
-        db.refresh(admin)
-
-        print(f"Production admin created: {admin.email}")
+        create_user_if_missing(
+            db=db,
+            name=rider_name,
+            email=rider_email,
+            password=rider_password,
+            role=UserRole.RIDER,
+        )
 
     finally:
         db.close()
