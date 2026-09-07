@@ -227,7 +227,7 @@ const roleDescription =
     <strong>{deliveredOrders}</strong>
   </div>
 </section>
-{role === "ATTENDANT" && (
+{(role === "ADMIN" || role === "ATTENDANT") && (
   <CreateOrder onOrderCreated={syncData} />
 )}
 {role !== "RIDER" && (
