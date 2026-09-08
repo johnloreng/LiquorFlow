@@ -53,6 +53,10 @@ def main():
     rider_password = os.getenv("SEED_RIDER_PASSWORD")
     rider_name = os.getenv("SEED_RIDER_NAME", "LiquorFlow Rider")
 
+    rider2_email = os.getenv("SEED_RIDER2_EMAIL")
+    rider2_password = os.getenv("SEED_RIDER2_PASSWORD")
+    rider2_name = os.getenv("SEED_RIDER2_NAME", "LiquorFlow Rider 2")
+
     dispatcher_email = os.getenv("SEED_DISPATCHER_EMAIL")
     dispatcher_password = os.getenv("SEED_DISPATCHER_PASSWORD")
     dispatcher_name = os.getenv(
@@ -66,6 +70,10 @@ def main():
 
     if not rider_email or not rider_password:
         print("Production rider seed variables are not configured.")
+        return
+
+    if not rider2_email or not rider2_password:
+        print("Production second rider seed variables are not configured.")
         return
 
     if not dispatcher_email or not dispatcher_password:
@@ -88,6 +96,14 @@ def main():
             name=rider_name,
             email=rider_email,
             password=rider_password,
+            role=UserRole.RIDER,
+        )
+
+        create_user_if_missing(
+            db=db,
+            name=rider2_name,
+            email=rider2_email,
+            password=rider2_password,
             role=UserRole.RIDER,
         )
 
