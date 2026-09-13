@@ -87,7 +87,7 @@ Every stage is recorded by the system, providing better visibility and accountab
 * Password hashing
 * Role-based access control
 * Protected API endpoints
-* Separate workflows for Admin, Attendant, Dispatcher and Rider
+* Separate workflows for Admin, Dispatcher and Rider
 
 ###  Product Management
 
