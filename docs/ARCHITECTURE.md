@@ -9,7 +9,7 @@ The production deployment separates the application into three primary layers:
 ```text
 ┌──────────────────────────────────────────────┐
 │                  USERS                       │
-│ Admin · Attendant · Dispatcher · Rider       │
+│       Admin · Dispatcher · Rider             │
 └──────────────────────┬───────────────────────┘
                        │
                        ▼
@@ -176,12 +176,11 @@ Passwords are stored as hashes rather than plaintext passwords.
 
 ## 5. Role-Based Access
 
-LiquorFlow defines four application roles:
+LiquorFlow defines three application roles:
 
 | Role | Primary responsibilities |
 |---|---|
-| ADMIN | System administration, products, orders, deliveries, users |
-| ATTENDANT | Customer order creation and order processing |
+| ADMIN | System administration, products, customer orders, deliveries, users |
 | DISPATCHER | Order visibility, rider assignment, delivery monitoring |
 | RIDER | Assigned deliveries and delivery status updates |
 
@@ -192,28 +191,32 @@ Authorization is enforced by protected backend routes rather than relying only o
 ## 6. Order Lifecycle
 
 ```text
-Create Order
-     │
-     ▼
-  PENDING
-     │
-     ▼
-Assign Rider
-     │
-     ▼
- ASSIGNED
-     │
-     ▼
-PICKED_UP
-     │
-     ▼
-OUT_FOR_DELIVERY
-     │
-     ▼
- DELIVERED
-     │
-     ▼
-Proof of Delivery
+ADMIN
+  │
+  └── Create Order
+          │
+          ▼
+       PENDING
+          │
+          ▼
+      DISPATCHER
+          │
+          └── Assign Rider
+                  │
+                  ▼
+                RIDER
+                  │
+                  ▼
+              PICKED_UP
+                  │
+                  ▼
+           OUT_FOR_DELIVERY
+                  │
+                  ▼
+              DELIVERED
+                  │
+                  ▼
+          Proof of Delivery
 ```
 
 The delivery service validates status transitions so that the workflow progresses sequentially.
