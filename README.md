@@ -1,28 +1,28 @@
-#  LiquorFlow
+# LiquorFlow
 
 ### Order & Delivery Management System for Small Liquor Retailers
 
-LiquorFlow is a web-based order and delivery management system designed to help small liquor retailers move away from informal WhatsApp/phone-based delivery coordination to a structured, trackable workflow.
+LiquorFlow is a web-based order and delivery management system designed to help small liquor retailers move from informal WhatsApp/phone-based delivery coordination to a structured, trackable workflow.
 
-The system connects **admin, dispatchers and riders** through role-based access and provides visibility throughout the delivery lifecycle — from order creation to proof of delivery.
+The system connects **administrators, attendants, dispatchers, and riders** through role-based access and provides visibility throughout the delivery lifecycle — from order creation to proof of delivery.
 
 ---
 
-##  Project Overview
+## Project Overview
 
 Small retailers often coordinate customer deliveries through phone calls and WhatsApp messages. This can make it difficult to:
 
-* Keep a centralized record of orders
-* Know which rider is handling an order
-* Track the current delivery status
-* Maintain accountability for completed deliveries
-* Confirm that a delivery has actually been completed
+- Keep a centralized record of orders
+- Know which rider is handling an order
+- Track the current delivery status
+- Maintain accountability for completed deliveries
+- Confirm that a delivery has actually been completed
 
-LiquorFlow addresses these challenges by providing a centralized digital workflow for managing orders and deliveries.
+LiquorFlow addresses these challenges with a centralized digital workflow for managing products, customers, orders, rider assignments, and deliveries.
 
 ---
 
-##  Solution
+## Solution
 
 LiquorFlow provides a simple role-based workflow:
 
@@ -44,93 +44,99 @@ Out for Delivery
 Proof of Delivery
 ```
 
-Every stage is recorded by the system, providing better visibility and accountability.
+Each delivery stage is recorded by the system, providing operational visibility and accountability.
 
 ---
 
-##  User Roles
+## User Roles
 
 ### Administrator
 
-* Access the management dashboard
-* Manage products
-* Create customer orders
-* Select products
-* View orders
-* Oversee deliveries
-* Manage system users
-* View created orders
+- Access the management dashboard
+- Manage products
+- Create customer orders
+- Select products and quantities
+- View orders
+- Oversee deliveries
+- Manage system users
+
+### Attendant
+
+- Create customer orders
+- Select products and quantities
+- View orders
+- Support day-to-day order processing
 
 ### Dispatcher
 
-* View orders
-* View delivery requests
-* Assign riders
-* Monitor delivery progress
+- View orders
+- View delivery requests
+- Assign riders
+- Monitor delivery progress
 
 ### Rider
 
-* View assigned deliveries
-* Update delivery status
-* Confirm pickup
-* Mark orders as out for delivery
-* Complete deliveries
-* Provide proof of delivery
+- View assigned deliveries
+- Update delivery status
+- Confirm pickup
+- Mark orders as out for delivery
+- Complete deliveries
+- Provide proof of delivery
 
 ---
 
-##  Key Features
+## Key Features
 
-###  Authentication & Authorization
+### Authentication & Authorization
 
-* JWT-based authentication
-* Password hashing
-* Role-based access control
-* Protected API endpoints
-* Separate workflows for Admin, Dispatcher and Rider
+- JWT-based authentication
+- Password hashing with Argon2
+- Role-based access control
+- Protected API endpoints
+- Separate workflows for Admin, Attendant, Dispatcher, and Rider
 
-###  Product Management
+### Product Management
 
-* Create products
-* Manage product prices
-* Manage stock quantities
-* Activate/deactivate products
-* Retrieve active products for order creation
+- Create products
+- Manage product prices
+- Manage stock quantities
+- Activate/deactivate products
+- Retrieve active products for order creation
 
-###  Customer Management
+### Customer Management
 
-* Create customer records
-* Store customer name
-* Store customer phone number
-* Store delivery address
+- Create customer records
+- Store customer name
+- Store customer phone number
+- Store delivery address
 
-###  Order Management
+### Order Management
 
-* Create orders
-* Add multiple products to an order
-* Specify product quantities
-* Automatically calculate order totals
-* Track order status
-* View orders in the dashboard
+- Create orders
+- Add multiple products to an order
+- Specify product quantities
+- Automatically calculate order totals
+- Track order status
+- View orders from the dashboard
 
-###  Delivery Management
+### Delivery Management
 
-* Assign riders to orders
-* Prevent duplicate delivery assignments
-* Track delivery status
-* Enforce sequential delivery transitions
-* Record delivery timestamps
-* Capture proof of delivery
+- Assign riders to orders
+- Prevent duplicate delivery assignments
+- Track delivery status
+- Enforce sequential delivery transitions
+- Record delivery timestamps
+- Capture proof of delivery
 
-###  Dashboard Synchronization
+### Dashboard Synchronization
 
-The frontend periodically synchronizes with the backend to keep dashboard information updated.
+The frontend periodically synchronizes dashboard data with the backend.
 
 A **Sync Now** option is also available for manual synchronization.
 
 ---
 
-##  Delivery Status Workflow
+## Delivery Status Workflow
 
 LiquorFlow enforces the following delivery sequence:
 
@@ -144,81 +150,82 @@ OUT_FOR_DELIVERY
 DELIVERED
 ```
 
-This prevents invalid status transitions and provides a clear audit trail of the delivery process.
+Invalid status transitions are rejected, providing a predictable workflow and audit trail.
 
 ---
 
-##  System Architecture
+## System Architecture
+
+The production system uses a three-service architecture:
 
 ```text
-                    ┌─────────────────────┐
-                    │       User          │
-                    │      Admin /        │
-                    │Dispatcher / Rider   │
-                    └──────────┬──────────┘
+                    ┌──────────────────────┐
+                    │        Users         │
+                    │ Admin / Attendant /  │
+                    │ Dispatcher / Rider   │
+                    └──────────┬───────────┘
                                │
                                ▼
-                    ┌─────────────────────┐
-                    │   React Frontend    │
-                    │      + Vite         │
-                    └──────────┬──────────┘
-                               │
-                         Axios / HTTP
-                               │
+                    ┌──────────────────────┐
+                    │   Render Frontend    │
+                    │     React + Vite     │
+                    └──────────┬───────────┘
+                               │ HTTPS / Axios
                                ▼
-                    ┌─────────────────────┐
-                    │    FastAPI API      │
-                    │                     │
-                    │ Authentication      │
-                    │ RBAC                │
-                    │ Orders              │
-                    │ Products            │
-                    │ Deliveries          │
-                    └──────────┬──────────┘
-                               │
-                        SQLAlchemy ORM
-                               │
+                    ┌──────────────────────┐
+                    │   Render Backend     │
+                    │ FastAPI + SQLAlchemy │
+                    │ Auth / RBAC / APIs   │
+                    └──────────┬───────────┘
+                               │ PostgreSQL
                                ▼
-                    ┌─────────────────────┐
-                    │     PostgreSQL      │
-                    │      Database       │
-                    └─────────────────────┘
+                    ┌──────────────────────┐
+                    │  Supabase PostgreSQL │
+                    │     Production DB    │
+                    └──────────────────────┘
 ```
+
+**Production database:** Supabase PostgreSQL.
+
+The previous Render PostgreSQL database was retired after the data was backed up, restored to Supabase, and production read/write operations were verified.
+
+See the detailed architecture documentation in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ---
 
-##  Technology Stack
+## Technology Stack
 
 ### Backend
 
-* **Python 3.14**
-* **FastAPI 0.141.1**
-* **SQLAlchemy 2.0.52**
-* **PostgreSQL**
-* **Pydantic 2.13.4**
-* **Alembic 1.19.1**
-* **PyJWT 2.13.0**
-* **pwdlib / Argon2**
-* **Uvicorn**
+- **Python 3.14**
+- **FastAPI 0.141.1**
+- **SQLAlchemy 2.0.52**
+- **PostgreSQL**
+- **Pydantic 2.13.4**
+- **Alembic 1.19.1**
+- **PyJWT 2.13.0**
+- **pwdlib / Argon2**
+- **Uvicorn**
 
 ### Frontend
 
-* **React**
-* **Vite 8.2.2**
-* **Axios**
-* **React Router**
+- **React**
+- **Vite 8.2.2**
+- **Axios**
+- **React Router**
 
 ### Development & Deployment
 
-* **Git**
-* **GitHub**
-* **Render**
-* REST API
-* JWT Authentication
+- **Git**
+- **GitHub**
+- **Render**
+- **Supabase**
+- REST API
+- JWT Authentication
 
 ---
 
-##  Project Structure
+## Project Structure
 
 ```text
 LiquorFlow/
@@ -248,12 +255,16 @@ LiquorFlow/
 │   ├── package.json
 │   └── ...
 │
+├── docs/
+│   ├── ARCHITECTURE.md
+│   └── screenshots/
+│
 └── README.md
 ```
 
 ---
 
-##  Core Data Models
+## Core Data Models
 
 ### User
 
@@ -273,6 +284,7 @@ Supported roles:
 
 ```text
 ADMIN
+ATTENDANT
 DISPATCHER
 RIDER
 ```
@@ -339,25 +351,52 @@ updated_at
 
 ---
 
-##  Security
+## Database & Migration
 
-LiquorFlow implements several security controls:
+LiquorFlow uses **PostgreSQL** as its relational database and **Alembic** for schema migrations.
 
-* JWT authentication
-* Password hashing
-* Protected API routes
-* Role-based authorization
-* Rider-specific delivery access
-* Dispatcher/admin delivery management
-* Input validation with Pydantic
-* Duplicate delivery assignment protection
-* Sequential delivery status validation
+### Production database
 
-Production credentials and secrets are stored through environment variables rather than committed to the repository.
+The production database is hosted on **Supabase PostgreSQL**.
+
+The migration from the original Render PostgreSQL database was completed using this process:
+
+1. Created the Supabase PostgreSQL project.
+2. Created a backup of the existing Render database.
+3. Restored the backup into Supabase.
+4. Verified the migrated tables and data.
+5. Updated the Render backend `DATABASE_URL` to Supabase.
+6. Verified production API reads.
+7. Verified production writes by creating an order and completing the rider delivery workflow.
+8. Removed temporary database diagnostics.
+9. Rotated the production database credentials.
+10. Verified the application again after credential rotation.
+11. Retired the previous Render PostgreSQL database.
+
+A local recovery dump was retained during the migration process.
 
 ---
 
-##  Testing
+## Security
+
+LiquorFlow implements several security controls:
+
+- JWT authentication
+- Password hashing
+- Protected API routes
+- Role-based authorization
+- Rider-specific delivery access
+- Dispatcher/admin delivery management
+- Input validation with Pydantic
+- Duplicate delivery assignment protection
+- Sequential delivery status validation
+- Environment-based production configuration
+
+Production credentials and secrets are stored through environment variables and are not committed to the repository.
+
+---
+
+## Testing
 
 The backend test suite contains automated tests covering major application functionality.
 
@@ -369,19 +408,21 @@ The backend test suite contains automated tests covering major application funct
 
 The tests cover areas including:
 
-* Authentication
-* User roles
-* Products
-* Orders
-* Deliveries
-* Delivery status transitions
-* Authorization
-* Duplicate assignments
-* API behavior
+- Authentication
+- User roles
+- Products
+- Orders
+- Deliveries
+- Delivery status transitions
+- Authorization
+- Duplicate assignments
+- API behavior
+
+In addition to automated tests, the production workflow was manually verified after the database migration and credential rotation.
 
 ---
 
-##  Live Application
+## Live Application
 
 ### Frontend
 
@@ -393,22 +434,24 @@ The tests cover areas including:
 
 ### API Documentation
 
-[LiquorFlow API Documentation](https://liquorflow-backend.onrender.com)
+[LiquorFlow API Documentation](https://liquorflow-backend.onrender.com/docs)
+
+### GitHub Repository
+
+[johnloreng/LiquorFlow](https://github.com/johnloreng/LiquorFlow)
 
 ---
 
-##  Running Locally
+## Running Locally
 
 ### Prerequisites
 
 Make sure you have:
 
-* Python 3.14+
-* Node.js
-* PostgreSQL
-* Git
-
----
+- Python 3.14+
+- Node.js
+- PostgreSQL
+- Git
 
 ### 1. Clone the repository
 
@@ -417,53 +460,32 @@ git clone https://github.com/johnloreng/LiquorFlow.git
 cd LiquorFlow
 ```
 
----
-
-# Backend Setup
-
-### 2. Navigate to backend
+### 2. Backend setup
 
 ```bash
 cd backend
-```
-
-### 3. Create a virtual environment
-
-```bash
 python3 -m venv venv
-```
-
-### 4. Activate the environment
-
-```bash
 source venv/bin/activate
-```
-
-### 5. Install dependencies
-
-```bash
 pip install -r requirements.txt
 ```
-
-### 6. Configure environment variables
 
 Create a `.env` file containing the required database and authentication configuration.
 
 **Do not commit `.env` or production secrets to GitHub.**
 
-### 7. Run database migrations
+Run migrations:
 
 ```bash
 alembic upgrade head
 ```
 
-### 8. Start the backend
+Start the backend:
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-Backend will be available at:
+Backend:
 
 ```text
 http://127.0.0.1:8000
@@ -475,29 +497,17 @@ API documentation:
 http://127.0.0.1:8000/docs
 ```
 
----
-
-# Frontend Setup
+### 3. Frontend setup
 
 Open another terminal:
 
 ```bash
 cd frontend
-```
-
-Install dependencies:
-
-```bash
 npm install
-```
-
-Start the development server:
-
-```bash
 npm run dev
 ```
 
-Frontend will normally be available at:
+Frontend:
 
 ```text
 http://localhost:5173
@@ -505,7 +515,7 @@ http://localhost:5173
 
 ---
 
-##  Running Tests
+## Running Tests
 
 From the backend directory with the virtual environment activated:
 
@@ -521,61 +531,65 @@ Expected result for the current test suite:
 
 ---
 
-##  Deployment
+## Deployment
 
-LiquorFlow is deployed using **Render**.
-
-The production architecture consists of:
+LiquorFlow is deployed with **Render** for the frontend and backend, and **Supabase** for PostgreSQL.
 
 ```text
-React/Vite Frontend
-        │
-        ▼
-     Render
-        │
-        ▼
-FastAPI Backend
-        │
-        ▼
-PostgreSQL Database
+                    Production
+                        │
+        ┌───────────────┴───────────────┐
+        ▼                               ▼
+ Render Frontend                  Render Backend
+ React + Vite                     FastAPI
+        │                               │
+        └──────────── HTTPS ────────────┘
+                                        │
+                                        ▼
+                                Supabase PostgreSQL
 ```
 
-The backend uses database migrations during deployment and production environment variables for configuration.
+The backend uses Alembic migrations during deployment and production environment variables for configuration.
+
+The previous Render PostgreSQL database has been retired.
 
 ---
 
-##  Demonstrated Workflow
+## Demonstrated Production Workflow
 
 The completed production workflow has been manually verified:
 
 ```text
-ADMIN
-  │
-  └── Create Order
-          │
-          ▼
-    DISPATCHER
-          │
-          └── Assign Rider
-                  │
-                  ▼
-               RIDER
-                  │
-                  ├── Picked Up
-                  │
-                  ├── Out for Delivery
-                  │
-                  └── Delivered
-                          │
-                          ▼
-                  Proof of Delivery
+ADMIN / ATTENDANT
+       │
+       └── Create Order
+               │
+               ▼
+           PENDING
+               │
+               ▼
+          DISPATCHER
+               │
+               └── Assign Rider
+                       │
+                       ▼
+                    RIDER
+                       │
+                       ├── Picked Up
+                       │
+                       ├── Out for Delivery
+                       │
+                       └── Delivered
+                               │
+                               ▼
+                       Proof of Delivery
 ```
 
 This demonstrates the core MVP from order creation through delivery completion.
 
 ---
 
-##  Reflex Project
+## Reflex Project
 
 LiquorFlow was developed as part of **Reflex — The Readiness Sprint**.
 
@@ -583,34 +597,34 @@ The project focuses on solving a real operational problem faced by small retaile
 
 ### MVP Goals
 
-* Centralize delivery requests
-* Improve delivery visibility
-* Assign responsibility to riders
-* Track delivery status
-* Provide proof of delivery
-* Demonstrate a working full-stack solution
+- Centralize delivery requests
+- Improve delivery visibility
+- Assign responsibility to riders
+- Track delivery status
+- Provide proof of delivery
+- Demonstrate a working full-stack solution
 
 ---
 
-##  Future Improvements
+## Future Improvements
 
 With additional development time, LiquorFlow could be extended with:
 
-* Customer search and selection
-* Real-time WebSocket synchronization
-* SMS/WhatsApp notifications
-* GPS rider tracking
-* Map-based navigation
-* Online payment integration
-* Inventory alerts
-* Sales analytics
-* Delivery performance reports
-* Customer order history
-* Automated customer notifications
+- Customer search and selection
+- Real-time WebSocket synchronization
+- SMS/WhatsApp notifications
+- GPS rider tracking
+- Map-based navigation
+- Online payment integration
+- Inventory alerts
+- Sales analytics
+- Delivery performance reports
+- Customer order history
+- Automated customer notifications
 
 ---
 
-##  Author
+## Author
 
 **John Loreng**
 
@@ -620,8 +634,10 @@ GitHub:
 
 ---
 
-##  Project Status
+## Project Status
 
-**Status: Working MVP**
+**Status: Working MVP — Production Deployed**
 
-LiquorFlow has been deployed to production and the complete core workflow has been manually tested from order creation through rider assignment, delivery status updates, and proof of delivery.
+LiquorFlow is deployed to production and the core workflow has been manually tested from order creation through rider assignment, delivery status updates, and proof of delivery.
+
+The production PostgreSQL database has been migrated from Render to Supabase and verified with live application read/write operations.
