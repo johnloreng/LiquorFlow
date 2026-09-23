@@ -4,7 +4,7 @@
 
 LiquorFlow is a web-based order and delivery management system designed to help small liquor retailers move from informal WhatsApp/phone-based delivery coordination to a structured, trackable workflow.
 
-The system connects **administrators, attendants, dispatchers, and riders** through role-based access and provides visibility throughout the delivery lifecycle — from order creation to proof of delivery.
+The system connects **administrators, dispatchers, and riders** through role-based access and provides visibility throughout the delivery lifecycle — from order creation to proof of delivery.
 
 ---
 
@@ -60,13 +60,6 @@ Each delivery stage is recorded by the system, providing operational visibility 
 - Oversee deliveries
 - Manage system users
 
-### Attendant
-
-- Create customer orders
-- Select products and quantities
-- View orders
-- Support day-to-day order processing
-
 ### Dispatcher
 
 - View orders
@@ -93,7 +86,7 @@ Each delivery stage is recorded by the system, providing operational visibility 
 - Password hashing with Argon2
 - Role-based access control
 - Protected API endpoints
-- Separate workflows for Admin, Attendant, Dispatcher, and Rider
+- Separate workflows for Admin, Dispatcher, and Rider
 
 ### Product Management
 
@@ -161,8 +154,8 @@ The production system uses a three-service architecture:
 ```text
                     ┌──────────────────────┐
                     │        Users         │
-                    │ Admin / Attendant /  │
-                    │ Dispatcher / Rider   │
+                    │ Admin / Dispatcher / │
+                    │ Rider                │
                     └──────────┬───────────┘
                                │
                                ▼
@@ -284,7 +277,6 @@ Supported roles:
 
 ```text
 ADMIN
-ATTENDANT
 DISPATCHER
 RIDER
 ```
@@ -560,29 +552,29 @@ The previous Render PostgreSQL database has been retired.
 The completed production workflow has been manually verified:
 
 ```text
-ADMIN / ATTENDANT
-       │
-       └── Create Order
-               │
-               ▼
-           PENDING
-               │
-               ▼
-          DISPATCHER
-               │
-               └── Assign Rider
-                       │
-                       ▼
-                    RIDER
-                       │
-                       ├── Picked Up
-                       │
-                       ├── Out for Delivery
-                       │
-                       └── Delivered
-                               │
-                               ▼
-                       Proof of Delivery
+ADMIN
+ │
+ └── Create Order
+         │
+         ▼
+      PENDING
+         │
+         ▼
+     DISPATCHER
+         │
+         └── Assign Rider
+                 │
+                 ▼
+               RIDER
+                 │
+                 ├── Picked Up
+                 │
+                 ├── Out for Delivery
+                 │
+                 └── Delivered
+                         │
+                         ▼
+                 Proof of Delivery
 ```
 
 This demonstrates the core MVP from order creation through delivery completion.
